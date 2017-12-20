@@ -49,7 +49,7 @@ class Einstellungen(object):
         return self.fensterBreite / 2-20
 
     def ball_y(self):
-        return self.fensterHoehe  / 2-20
+        return self.fensterHoehe / 2-20
 
     def welcome_screen_height(self):
         return self.fensterHoehe * 1//3
@@ -68,7 +68,6 @@ class Einstellungen(object):
 
     def punkte_y(self):
         return 25
-
 
 
 '''Idealer Weise waere dies kein globales Objekt'''
@@ -107,8 +106,10 @@ class Circle(Form):
         pygame.draw.circle(fensterFlaeche, self.farbe,
                            (self.rect.x, self.rect.y), self.radius)
 
+
 class Willkommen():
     # Willkommensbildschirm beim Programmstart
+
     def __init__(self, x, y, breite, hoehe, vordergrundFarbe, hintergrundFarbe, schrift, text):
         self.x = x
         self.y = y
@@ -145,7 +146,7 @@ class Willkommen():
             nur anhand ihres Y Offsets,
             eine Zeile steht in der mitte die andere am unteren Rand.
         '''
-        zeile1, zeile2  = self.text.split('\n')
+        zeile1, zeile2 = self.text.split('\n')
 
         # Message at center
         text_width, text_height = self.schrift.size(zeile1)
@@ -160,73 +161,71 @@ class Willkommen():
         text_region = self.schrift.render(zeile2, False,
                                           self.vordergrundFarbe)
         x = self._center_x(text_width)
-        y = self._bottom_y(text_height) # (1)
+        y = self._bottom_y(text_height)  # (1)
         fensterFlaeche.blit(text_region, (x, y))
 
         # (1) Das hier ist der einzige Unterschied zum Block weiter oben
 
 
-class Spiel():
-    # Initialisierung (OOP Konstruktor)
+###
+# Game State Pattern:
+# http://gameprogrammingpatterns.com/state.html
 
-    def __init__(self, spielfeld, spieler, computer, ball, punkte_anzeige, willkommen):
+
+# Transition, die den State Change auslöst:
+class Next(Exception):
+    pass
+
+
+class GameState(object):
+
+    def behandle(self, event): pass
+
+    def update(self): pass
+
+    def zeichnen(self, fensterFlaeche): pass
+
+
+class SplashScreen(GameState):
+
+    def __init__(self, willkommen):
+        super().__init__()
+        self._willkommen = willkommen
+
+    def behandle(self, event):
+        if event.type == pygame.KEYDOWN:
+            raise Next()
+
+    def zeichnen(self, fensterFlaeche):
+        self._willkommen.draw(fensterFlaeche)
+
+
+class Playing(GameState):
+
+    def __init__(self, spielfeld, spieler, computer, ball, punkte_anzeige):
+        super().__init__()
         self.punkte = 0
-
-        self._fpsTimer = pygame.time.Clock()
-        self._fensterFlaeche = pygame.display.set_mode(
-            (config.fensterBreite, config.fensterHoehe))
-
-        # Der Konstruktor merkt sich lediglich die Abhängigkeiten
         self._spielfeld = spielfeld
         self._spieler = spieler
         self._computer = computer
         self._ball = ball
         self._allSchlaeger = [self._spieler, self._computer]  # Liste
         self._punkteAnzeige = punkte_anzeige
-        self._willkommen = willkommen
 
-    def run(self):
-        '''
-        Spielschleife - Game Loop Pattern, siehe auch:
-        http://gameprogrammingpatterns.com/game-loop.html
-        '''
-        running = False
-        # Willkommensbildschirm anzeigen, weiter mit Taste
-        while running == False:
-
-            # Hier stand vormals ein Konstruktoraufruf
-            self._willkommen.draw(self._fensterFlaeche)
-            pygame.display.update()
-            # Ueberpruefe ob Taste gedrueckt wurde
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    running = True
-        # Spielschleife
-        while running:
-            self._ereignisse_behandeln()
-            self._update()
-            self._zeichnen()
-            pygame.display.update()
-            self._fpsTimer.tick(config.fps)
-
-    def _ereignisse_behandeln(self):
-        # Ereignis abfragen
-        for ereignis in pygame.event.get():
-            self._behandle(ereignis)
-
-    def _behandle(self, event):
+    def behandle(self, event):
         # Ueberpruefe ob Schliessen-Symbol im Fenster gedrueckt wurde
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
             return
+
         # Ueberpruefe ob Maus bewegt wurde
         elif event.type == pygame.MOUSEMOTION:
             self._spieler.move(event.pos)
             return
         return event
 
-    def _update(self):
+    def update(self):
         self._bewegen()
         self._aufprall_berechnen()
 
@@ -248,12 +247,51 @@ class Spiel():
         elif self._ball.trefferSpieler():
             self.punkte = 0
 
-    def _zeichnen(self):
-        self._spielfeld.draw(self._fensterFlaeche)
-        self._ball.draw(self._fensterFlaeche)
+    def zeichnen(self, fensterFlaeche):
+        self._spielfeld.draw(fensterFlaeche)
+        self._ball.draw(fensterFlaeche)
         for schlaeger in self._allSchlaeger:
-            schlaeger.draw(self._fensterFlaeche)
-        self._punkteAnzeige.draw(self.punkte, self._fensterFlaeche)
+            schlaeger.draw(fensterFlaeche)
+        self._punkteAnzeige.draw(self.punkte, fensterFlaeche)
+
+
+class Spiel():
+    # Initialisierung (OOP Konstruktor)
+
+    def __init__(self, splash_screen, playing):
+        self._fpsTimer = pygame.time.Clock()
+        self._fensterFlaeche = pygame.display.set_mode(
+            (config.fensterBreite, config.fensterHoehe))
+
+        self._playing = playing
+        self._game_state = splash_screen
+
+    def run(self):
+        '''
+        Spielschleife - Game Loop Pattern, siehe auch:
+        http://gameprogrammingpatterns.com/game-loop.html
+        '''
+        while True:
+            # Die Loop sollte nie komplexer werden - und du brauchst
+            # definitiv nur eine. Wechsel des Spielzustandes
+            # kann über verschiedene arten erreicht werden,
+            # Hier nutze ich exceptions (elegant und wenig code)
+            # und mutable state (überschreiben des game state.)
+            # Für mehrere Zustände nach einander kannst du eine Liste nehmen
+            # Und dann immer das erste element durch .pop() entfernen.
+            try:
+                self._ereignisse_behandeln()
+                self._game_state.update()
+                self._game_state.zeichnen(self._fensterFlaeche)
+                pygame.display.update()
+                self._fpsTimer.tick(config.fps)
+            except Next:
+                self._game_state = self._playing
+
+    def _ereignisse_behandeln(self):
+        # Ereignis abfragen
+        for ereignis in pygame.event.get():
+            self._game_state.behandle(ereignis)
 
 
 class Spielfeld(object):
@@ -296,6 +334,7 @@ class Ball(Rectangle):  # Alternativer Parameter: Circle
         # Pruefe Kollision mit Wand
         if self.hit_ceiling() or self.hit_floor():
             self.bounce('y')
+
         if self.hit_wall():
             self.bounce('x')
 

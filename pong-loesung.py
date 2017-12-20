@@ -65,8 +65,13 @@ def main():
         schrift=config.schrift()
     )
 
+
     ## Aufruf der Methode run der Klasse Spiel
-    Spiel(spielfeld, spieler, computer, ball, punkte_anzeige, willkommen).run()
+    Spiel(
+        # Separate Game States
+        SplashScreen(willkommen),
+        Playing(spielfeld, spieler, computer, ball, punkte_anzeige)
+    ).run()
 
 # Aufruf der Main-Funktion
 if __name__=='__main__':
