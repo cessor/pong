@@ -77,7 +77,7 @@ class Circle(Form):
 
 class Willkommen():
     # Willkommensbildschirm beim Programmstart
-    def __init__(self, fensterFlaeche):
+    def draw(self, fensterFlaeche):
         popupFenster = pygame.Rect((config.linker_rand()+80, config.linker_rand()+60),
                 (config.fensterBreite*2//3, config.fensterHoehe*1//3))
         fensterFlaeche.fill(config.weiss, popupFenster)
@@ -92,12 +92,12 @@ class Willkommen():
         xZeile2 = (config.fensterBreite-textWidth2)//2
         yZeile2 = (config.fensterHoehe-config.abstand-textHeight2)//2
         fensterFlaeche.blit(zeile1, (xZeile1, yZeile1))
-        fensterFlaeche.blit(zeile2, (xZeile2, yZeile2))            
+        fensterFlaeche.blit(zeile2, (xZeile2, yZeile2))
 
 
 class Spiel():
     # Initialisierung (OOP Konstruktor)
-    def __init__(self, spielfeld, spieler, computer, ball, punkte_anzeige):
+    def __init__(self, spielfeld, spieler, computer, ball, punkte_anzeige, willkommen):
         self.punkte = 0
         self._fpsTimer = pygame.time.Clock()
 
@@ -110,6 +110,9 @@ class Spiel():
         self._allSchlaeger = [self._spieler, self._computer] # Liste
         self._punkteAnzeige = punkte_anzeige
 
+        # Der Konstruktor merkt sich lediglich die Abhängigkeit
+        self._willkommen = willkommen
+
     def run(self):
         '''
         Spielschleife - Game Loop Pattern, siehe auch:
@@ -118,7 +121,9 @@ class Spiel():
         running = False
         # Willkommensbildschirm anzeigen, weiter mit Taste
         while running == False:
-            Willkommen(self._fensterFlaeche)
+
+            # Hier stand vormals ein Konstruktoraufruf
+            self._willkommen.draw(self._fensterFlaeche)
             pygame.display.update()
             # Ueberpruefe ob Taste gedrueckt wurde
             for event in pygame.event.get():

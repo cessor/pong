@@ -9,6 +9,9 @@ def main():
 
     '''Konkrete Instanzen hier deklarieren'''
 
+    # Die Abhängigkeit wird von aussen erzeugt:
+    willkommen = Willkommen()
+
     ## hier Objekt ball von Klasse Ball anlegen
     ## und mit Parametern (x, y, breite, hoehe, geschwindigkeit) initialisieren
     ball = Ball(
@@ -18,7 +21,7 @@ def main():
         hoehe=config.linienDicke,
         geschwindigkeit=5
     )
-    
+
     ## hier Objekt spieler von Klasse Schlaeger anlegen
     ## und mit Parametern (x, y, breite, hoehe, geschwindigkeit) initialisieren
     spieler = Schlaeger(
@@ -55,7 +58,7 @@ def main():
     )
 
     ## Aufruf der Methode run der Klasse Spiel
-    Spiel(spielfeld, spieler, computer, ball, punkte_anzeige).run()
+    Spiel(spielfeld, spieler, computer, ball, punkte_anzeige, willkommen).run()
 
 # Aufruf der Main-Funktion
 if __name__=='__main__':
