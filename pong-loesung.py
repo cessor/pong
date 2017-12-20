@@ -13,8 +13,8 @@ def main():
     willkommen = Willkommen(
         x=config.welcome_screen_x(),
         y=config.welcome_screen_x(),
-        breite=config.fensterBreite * 2//3,
-        hoehe=config.fensterHoehe * 1//3,
+        breite=config.welcome_screen_width(),
+        hoehe=config.welcome_screen_height(),
         vordergrundFarbe=config.schwarz,
         hintergrundFarbe=config.weiss,
         schrift=config.schrift(),

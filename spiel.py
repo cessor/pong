@@ -44,11 +44,19 @@ class Einstellungen(object):
     def schrift(self):
         return pygame.font.SysFont('arial', self.schriftGroesse, bold=True)
 
+    def welcome_screen_height(self):
+        return self.fensterHoehe * 1//3
+
+    def welcome_screen_width(self):
+        return self.fensterBreite * 2//3
+
     def welcome_screen_x(self):
         return self.abstand + 80
 
     def welcome_screen_y(self):
         return self.abstand + 60
+
+
 
 '''Idealer Weise waere dies kein globales Objekt'''
 config = Einstellungen()
