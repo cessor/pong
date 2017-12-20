@@ -11,8 +11,8 @@ def main():
 
     # Die Abhängigkeit wird von aussen erzeugt:
     willkommen = Willkommen(
-        x=config.linker_rand() + 80,
-        y=config.linker_rand() + 60,
+        x=config.welcome_screen_x(),
+        y=config.welcome_screen_x(),
         breite=config.fensterBreite * 2//3,
         hoehe=config.fensterHoehe * 1//3,
         vordergrundFarbe=config.schwarz,
