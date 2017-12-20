@@ -1,10 +1,13 @@
-### Bibliothek spiel.py
-### Stand Dez 2017, Copyright Wilhelm Buechner Hochschule
+# Bibliothek spiel.py
+# Stand Dez 2017, Copyright Wilhelm Buechner Hochschule
 
-import pygame, sys, time
+import pygame
+import sys
+import time
+
 
 class Einstellungen(object):
-    fps = 40 # Frames pro Sekunde
+    fps = 40  # Frames pro Sekunde
 
     # Farben
     schwarz = (0, 0, 0)
@@ -18,7 +21,7 @@ class Einstellungen(object):
     schlaegerBreite = 10
     schlaegerHoehe = 50
     schriftGroesse = 16
-    ballRadius = 5 # nur fuer runden Ball notwendig
+    ballRadius = 5  # nur fuer runden Ball notwendig
 
     def __init__(self):
         # Notwendige Initialisierung fuer pygame
@@ -46,6 +49,7 @@ config = Einstellungen()
 
 
 class Form(pygame.sprite.Sprite):
+
     def __init__(self, x, y, breite, hoehe, geschwindigkeit, farbe=config.weiss):
         self.x = x
         self.y = y
@@ -56,6 +60,7 @@ class Form(pygame.sprite.Sprite):
 
 
 class Rectangle(Form):
+
     def __init__(self, x, y, breite, hoehe, geschwindigkeit, farbe=config.weiss):
         super().__init__(x, y, breite, hoehe, geschwindigkeit, farbe)
         self.rect = pygame.Rect(self.x, self.y, self.breite, self.hoehe)
@@ -65,6 +70,7 @@ class Rectangle(Form):
 
 
 class Circle(Form):
+
     def __init__(self, x, y, breite, hoehe, geschwindigkeit, farbe=config.weiss):
         super().__init__(x, y, breite, hoehe, geschwindigkeit, farbe)
         self.rect = pygame.Rect(self.x, self.y, self.breite, self.hoehe)
@@ -77,6 +83,7 @@ class Circle(Form):
 
 class Willkommen():
     # Willkommensbildschirm beim Programmstart
+
     def draw(self, fensterFlaeche):
         self._draw_screen(fensterFlaeche)
         self._draw_text(fensterFlaeche)
@@ -89,11 +96,11 @@ class Willkommen():
         fensterFlaeche.fill(config.weiss, popupFenster)
 
     def _draw_text(self, fensterFlaeche):
-        textZeile1='Willkommen zu Pong'
-        textZeile2='Spielstart mit beliebiger Taste'
+        textZeile1 = 'Willkommen zu Pong'
+        textZeile2 = 'Spielstart mit beliebiger Taste'
 
-        textWidth1 , textHeight1 = config.schrift().size(textZeile1)
-        textWidth2 , textHeight2 = config.schrift().size(textZeile2)
+        textWidth1, textHeight1 = config.schrift().size(textZeile1)
+        textWidth2, textHeight2 = config.schrift().size(textZeile2)
 
         zeile1 = config.schrift().render(textZeile1, False, config.schwarz)
         xZeile1 = (config.fensterBreite-textWidth1) // 2
@@ -109,6 +116,7 @@ class Willkommen():
 
 class Spiel():
     # Initialisierung (OOP Konstruktor)
+
     def __init__(self, spielfeld, spieler, computer, ball, punkte_anzeige, willkommen):
         self.punkte = 0
         self._fpsTimer = pygame.time.Clock()
@@ -119,7 +127,7 @@ class Spiel():
         self._spieler = spieler
         self._computer = computer
         self._ball = ball
-        self._allSchlaeger = [self._spieler, self._computer] # Liste
+        self._allSchlaeger = [self._spieler, self._computer]  # Liste
         self._punkteAnzeige = punkte_anzeige
 
         # Der Konstruktor merkt sich lediglich die Abhängigkeit
@@ -197,6 +205,7 @@ class Spiel():
 
 
 class Spielfeld(object):
+
     def draw(self, fensterFlaeche):
         fensterFlaeche.fill(config.schwarz)
         self._umrandung(fensterFlaeche)
@@ -204,17 +213,17 @@ class Spielfeld(object):
 
     def _umrandung(self, fensterFlaeche):
         pygame.draw.rect(fensterFlaeche, config.weiss,
-                ((0, 0), (config.fensterBreite, config.fensterHoehe)),
-                config.linienDicke*2)
+                         ((0, 0), (config.fensterBreite, config.fensterHoehe)),
+                         config.linienDicke*2)
 
     def _mittellinie(self, fensterFlaeche):
         pygame.draw.line(fensterFlaeche, config.weiss,
-                 (config.fensterBreite//2, 0),
-                 (config.fensterBreite//2, config.fensterHoehe),
-                  config.linienDicke//4)
+                         (config.fensterBreite//2, 0),
+                         (config.fensterBreite//2, config.fensterHoehe),
+                         config.linienDicke//4)
 
 
-class Ball(Rectangle): # Alternativer Parameter: Circle
+class Ball(Rectangle):  # Alternativer Parameter: Circle
     # Pfeiltasten
     LEFT = -1
     RIGHT = 1
@@ -254,7 +263,7 @@ class Ball(Rectangle): # Alternativer Parameter: Circle
         return (
             (self.richtungX == -1
                 and self.rect.left <= self.breite) or
-            (self.richtungX ==  1
+            (self.richtungX == 1
                 and self.rect.right >= config.fensterBreite - self.breite)
         )
 
@@ -276,13 +285,14 @@ class Ball(Rectangle): # Alternativer Parameter: Circle
 
 class Schlaeger(Rectangle):
     # Funktion zum Zeichnen des Schlaegers
+
     def draw(self, fensterFlaeche):
         # Stoppt Schlaeger am unteren Spielfeldrand
         if self.rect.bottom > config.fensterHoehe - config.linienDicke:
             self.rect.bottom = config.fensterHoehe - config.linienDicke
         # Stoppt Schlaeger am oberen Spielfeldrand
         elif self.rect.top < config.linienDicke:
-            self.rect.top = config.linienDicke+1 # randkorrektur
+            self.rect.top = config.linienDicke+1  # randkorrektur
 
         super().draw(fensterFlaeche)
 
@@ -293,6 +303,7 @@ class Schlaeger(Rectangle):
 
 class AutoSchlaeger(Schlaeger):
     # Initialisierung (OOP Konstruktor)
+
     def __init__(self, x, y, breite, hoehe, geschwindigkeit, ball, farbe=config.weiss):
         super().__init__(x, y, breite, hoehe, geschwindigkeit, farbe)
         self._ball = ball
@@ -321,6 +332,7 @@ class AutoSchlaeger(Schlaeger):
 
 class PunkteAnzeige():
     # Initialisierung (OOP Konstruktor)
+
     def __init__(self, punkte, x, y, schrift):
         self.punkte = punkte
         self.x = x
@@ -330,7 +342,8 @@ class PunkteAnzeige():
     # Schreibe aktuellen Punktestand an den Bildschirm
     def draw(self, punkte, fensterFlaeche):
         self.punkte = punkte
-        result_surf = self.schrift.render('Punkte: %s' %(self.punkte), True, config.weiss)
+        result_surf = self.schrift.render(
+            'Punkte: %s' % (self.punkte), True, config.weiss)
         rect = result_surf.get_rect()
         rect.topleft = (self.x, self.y)
         fensterFlaeche.blit(result_surf, rect)
