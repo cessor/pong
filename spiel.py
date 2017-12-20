@@ -93,7 +93,6 @@ class Willkommen():
         self.schrift = config.schrift()
         self.text = '''Willkommen zu Pong\nSpielstart mit beliebiger Taste'''
 
-
     def draw(self, fensterFlaeche):
         self._draw_screen(fensterFlaeche)
         self._draw_text(fensterFlaeche)
@@ -102,14 +101,14 @@ class Willkommen():
         popupFenster = pygame.Rect(self.x, self.y, self.breite, self.hoehe)
         fensterFlaeche.fill(self.hintergrundFarbe, popupFenster)
 
-    def center_x(self, text_width):
+    def _bottom_y(self, text_height):
+        return self.y + self.hoehe - text_height
+
+    def _center_x(self, text_width):
         return self.x + (self.breite // 2) - (text_width // 2)
 
-    def center_y(self, text_height):
+    def _center_y(self, text_height):
         return self.y + (self.hoehe // 2) - (text_height // 2)
-
-    def bottom_y(self, text_height):
-        return self.y + self.hoehe - text_height
 
     def _draw_text(self, fensterFlaeche):
         '''
@@ -126,17 +125,19 @@ class Willkommen():
         text_width, text_height = self.schrift.size(zeile1)
         text_region = self.schrift.render(zeile1, False,
                                           self.vordergrundFarbe)
-        x = self.center_x(text_width)
-        y = self.center_y(text_height)
+        x = self._center_x(text_width)
+        y = self._center_y(text_height)
         fensterFlaeche.blit(text_region, (x, y))
 
         # Spielstart at Bottom
         text_width, text_height = self.schrift.size(zeile2)
         text_region = self.schrift.render(zeile2, False,
                                           self.vordergrundFarbe)
-        x = self.center_x(text_width)
-        y = self.bottom_y(text_height)
+        x = self._center_x(text_width)
+        y = self._bottom_y(text_height) # (1)
         fensterFlaeche.blit(text_region, (x, y))
+
+        # (1) Das hier ist der einzige Unterschied zum Block weiter oben
 
 
 class Spiel():
