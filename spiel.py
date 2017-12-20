@@ -91,6 +91,8 @@ class Willkommen():
         self.hintergrundFarbe = config.weiss
         self.vordergrundFarbe = config.schwarz
         self.schrift = config.schrift()
+        self.text = '''Willkommen zu Pong\nSpielstart mit beliebiger Taste'''
+
 
     def draw(self, fensterFlaeche):
         self._draw_screen(fensterFlaeche)
@@ -118,21 +120,19 @@ class Willkommen():
             nur anhand ihres Y Offsets,
             eine Zeile steht in der mitte die andere am unteren Rand
         '''
-
-        textZeile1 = 'Willkommen zu Pong'
-        textZeile2 = 'Spielstart mit beliebiger Taste'
+        zeile1, zeile2  = self.text.split('\n')
 
         # Message at center
-        text_width, text_height = self.schrift.size(textZeile1)
-        text_region = self.schrift.render(textZeile1, False,
+        text_width, text_height = self.schrift.size(zeile1)
+        text_region = self.schrift.render(zeile1, False,
                                           self.vordergrundFarbe)
         x = self.center_x(text_width)
         y = self.center_y(text_height)
         fensterFlaeche.blit(text_region, (x, y))
 
         # Spielstart at Bottom
-        text_width, text_height = self.schrift.size(textZeile2)
-        text_region = self.schrift.render(textZeile2, False,
+        text_width, text_height = self.schrift.size(zeile2)
+        text_region = self.schrift.render(zeile2, False,
                                           self.vordergrundFarbe)
         x = self.center_x(text_width)
         y = self.bottom_y(text_height)
