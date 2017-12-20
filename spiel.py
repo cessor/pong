@@ -100,17 +100,15 @@ class Willkommen():
         textZeile2 = 'Spielstart mit beliebiger Taste'
 
         textWidth1, textHeight1 = config.schrift().size(textZeile1)
-        textWidth2, textHeight2 = config.schrift().size(textZeile2)
-
         zeile1 = config.schrift().render(textZeile1, False, config.schwarz)
         xZeile1 = (config.fensterBreite-textWidth1) // 2
         yZeile1 = (config.fensterHoehe * 2//3 - textHeight1) // 2
+        fensterFlaeche.blit(zeile1, (xZeile1, yZeile1))
 
+        textWidth2, textHeight2 = config.schrift().size(textZeile2)
         zeile2 = config.schrift().render(textZeile2, False, config.schwarz)
         xZeile2 = (config.fensterBreite - textWidth2) // 2
-        yZeile2 = (config.fensterHoehe - config.abstand - textHeight2)//2
-
-        fensterFlaeche.blit(zeile1, (xZeile1, yZeile1))
+        yZeile2 = (config.fensterHoehe - config.abstand - textHeight2) // 2
         fensterFlaeche.blit(zeile2, (xZeile2, yZeile2))
 
 
