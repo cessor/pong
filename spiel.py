@@ -100,21 +100,33 @@ class Willkommen():
         popupFenster = pygame.Rect(self.x, self.y, self.breite, self.hoehe)
         fensterFlaeche.fill(self.hintergrundFarbe, popupFenster)
 
+    def center_x(self, text_width):
+        return self.x + (self.breite // 2) - (text_width // 2)
+
+    def center_y(self, text_height):
+        return self.y + (self.hoehe // 2) - (text_height // 2)
+
+    def bottom_y(self, text_height):
+        return self.y + self.hoehe - text_height
+
     def _draw_text(self, fensterFlaeche):
         textZeile1 = 'Willkommen zu Pong'
         textZeile2 = 'Spielstart mit beliebiger Taste'
 
-        textWidth1, textHeight1 = self.schrift.size(textZeile1)
-        zeile1 = self.schrift.render(textZeile1, False, self.vordergrundFarbe)
-        xZeile1 = (config.fensterBreite - textWidth1) // 2
-        yZeile1 = (config.fensterHoehe * 2//3 - textHeight1) // 2
-        fensterFlaeche.blit(zeile1, (xZeile1, yZeile1))
+        text_width, text_height = self.schrift.size(textZeile1)
+        text_region = self.schrift.render(textZeile1, False, self.vordergrundFarbe)
 
-        textWidth2, textHeight2 = self.schrift.size(textZeile2)
-        zeile2 = self.schrift.render(textZeile2, False, self.vordergrundFarbe)
-        xZeile2 = (config.fensterBreite - textWidth2) // 2
-        yZeile2 = (config.fensterHoehe - config.abstand - textHeight2) // 2
-        fensterFlaeche.blit(zeile2, (xZeile2, yZeile2))
+        fensterFlaeche.blit(
+            text_region,
+            (self.center_x(text_width), self.center_y(text_height))
+        )
+
+        text_width, text_height = self.schrift.size(textZeile2)
+        text_region = self.schrift.render(textZeile2, False, self.vordergrundFarbe)
+
+        fensterFlaeche.blit(text_region,
+            (self.center_x(text_width), self.bottom_y(text_height))
+        )
 
 
 class Spiel():
