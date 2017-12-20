@@ -99,14 +99,16 @@ class Willkommen():
         textZeile1 = 'Willkommen zu Pong'
         textZeile2 = 'Spielstart mit beliebiger Taste'
 
+        vordergrundFarbe = config.schwarz
+
         textWidth1, textHeight1 = config.schrift().size(textZeile1)
-        zeile1 = config.schrift().render(textZeile1, False, config.schwarz)
-        xZeile1 = (config.fensterBreite-textWidth1) // 2
+        zeile1 = config.schrift().render(textZeile1, False, vordergrundFarbe)
+        xZeile1 = (config.fensterBreite - textWidth1) // 2
         yZeile1 = (config.fensterHoehe * 2//3 - textHeight1) // 2
         fensterFlaeche.blit(zeile1, (xZeile1, yZeile1))
 
         textWidth2, textHeight2 = config.schrift().size(textZeile2)
-        zeile2 = config.schrift().render(textZeile2, False, config.schwarz)
+        zeile2 = config.schrift().render(textZeile2, False, vordergrundFarbe)
         xZeile2 = (config.fensterBreite - textWidth2) // 2
         yZeile2 = (config.fensterHoehe - config.abstand - textHeight2) // 2
         fensterFlaeche.blit(zeile2, (xZeile2, yZeile2))
