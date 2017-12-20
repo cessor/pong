@@ -110,6 +110,15 @@ class Willkommen():
         return self.y + self.hoehe - text_height
 
     def _draw_text(self, fensterFlaeche):
+        '''
+            Diese Methode ist sehr redundant.
+            Wenn noch mehr Text gezeichnet werden muss,
+            würde ich sie weiter strukturieren und die X und Y offsets
+            parametrisieren. Die Beiden Blöcke unterscheiden sich
+            nur anhand ihres Y Offsets,
+            eine Zeile steht in der mitte die andere am unteren Rand
+        '''
+
         textZeile1 = 'Willkommen zu Pong'
         textZeile2 = 'Spielstart mit beliebiger Taste'
 
