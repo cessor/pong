@@ -113,20 +113,21 @@ class Willkommen():
         textZeile1 = 'Willkommen zu Pong'
         textZeile2 = 'Spielstart mit beliebiger Taste'
 
+        # Message at center
         text_width, text_height = self.schrift.size(textZeile1)
-        text_region = self.schrift.render(textZeile1, False, self.vordergrundFarbe)
+        text_region = self.schrift.render(textZeile1, False,
+                                          self.vordergrundFarbe)
+        x = self.center_x(text_width)
+        y = self.center_y(text_height)
+        fensterFlaeche.blit(text_region, (x, y))
 
-        fensterFlaeche.blit(
-            text_region,
-            (self.center_x(text_width), self.center_y(text_height))
-        )
-
+        # Spielstart at Bottom
         text_width, text_height = self.schrift.size(textZeile2)
-        text_region = self.schrift.render(textZeile2, False, self.vordergrundFarbe)
-
-        fensterFlaeche.blit(text_region,
-            (self.center_x(text_width), self.bottom_y(text_height))
-        )
+        text_region = self.schrift.render(textZeile2, False,
+                                          self.vordergrundFarbe)
+        x = self.center_x(text_width)
+        y = self.bottom_y(text_height)
+        fensterFlaeche.blit(text_region, (x, y))
 
 
 class Spiel():
