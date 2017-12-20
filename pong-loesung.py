@@ -41,7 +41,6 @@ def main():
         geschwindigkeit=0,
     )
 
-
     ## hier Objekt spielfeld von Klasse Spielfeld anlegen (keine Parameter)
     spielfeld = Spielfeld()
 

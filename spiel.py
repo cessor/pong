@@ -143,7 +143,7 @@ class Willkommen():
             würde ich sie weiter strukturieren und die X und Y offsets
             parametrisieren. Die Beiden Blöcke unterscheiden sich
             nur anhand ihres Y Offsets,
-            eine Zeile steht in der mitte die andere am unteren Rand
+            eine Zeile steht in der mitte die andere am unteren Rand.
         '''
         zeile1, zeile2  = self.text.split('\n')
 
