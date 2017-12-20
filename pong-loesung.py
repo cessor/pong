@@ -10,7 +10,16 @@ def main():
     '''Konkrete Instanzen hier deklarieren'''
 
     # Die Abhängigkeit wird von aussen erzeugt:
-    willkommen = Willkommen()
+    willkommen = Willkommen(
+        x=config.linker_rand() + 80,
+        y=config.linker_rand() + 60,
+        breite=config.fensterBreite * 2//3,
+        hoehe=config.fensterHoehe * 1//3,
+        vordergrundFarbe=config.schwarz,
+        hintergrundFarbe=config.weiss,
+        schrift=config.schrift(),
+        text='Willkommen zu Pong\nSpielstart mit beliebiger Taste'
+    )
 
     ## hier Objekt ball von Klasse Ball anlegen
     ## und mit Parametern (x, y, breite, hoehe, geschwindigkeit) initialisieren

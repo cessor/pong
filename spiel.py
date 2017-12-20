@@ -80,18 +80,17 @@ class Circle(Form):
         pygame.draw.circle(fensterFlaeche, self.farbe,
                            (self.rect.x, self.rect.y), self.radius)
 
-
 class Willkommen():
     # Willkommensbildschirm beim Programmstart
-    def __init__(self):
-        self.x = config.linker_rand() + 80
-        self.y = config.linker_rand() + 60
-        self.breite = config.fensterBreite * 2//3
-        self.hoehe = config.fensterHoehe * 1//3
-        self.hintergrundFarbe = config.weiss
-        self.vordergrundFarbe = config.schwarz
-        self.schrift = config.schrift()
-        self.text = '''Willkommen zu Pong\nSpielstart mit beliebiger Taste'''
+    def __init__(self, x, y, breite, hoehe, vordergrundFarbe, hintergrundFarbe, schrift, text):
+        self.x = x
+        self.y = y
+        self.breite = breite
+        self.hoehe = hoehe
+        self.vordergrundFarbe = vordergrundFarbe
+        self.hintergrundFarbe = hintergrundFarbe
+        self.schrift = schrift
+        self.text = text
 
     def draw(self, fensterFlaeche):
         self._draw_screen(fensterFlaeche)
