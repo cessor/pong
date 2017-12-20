@@ -178,11 +178,8 @@ class Next(Exception):
 
 
 class GameState(object):
-
     def behandle(self, event): pass
-
     def update(self): pass
-
     def zeichnen(self, fensterFlaeche): pass
 
 
