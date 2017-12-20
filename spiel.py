@@ -119,18 +119,18 @@ class Spiel():
 
     def __init__(self, spielfeld, spieler, computer, ball, punkte_anzeige, willkommen):
         self.punkte = 0
-        self._fpsTimer = pygame.time.Clock()
 
-        self._spielfeld = spielfeld
+        self._fpsTimer = pygame.time.Clock()
         self._fensterFlaeche = pygame.display.set_mode(
             (config.fensterBreite, config.fensterHoehe))
+
+        # Der Konstruktor merkt sich lediglich die Abhängigkeiten
+        self._spielfeld = spielfeld
         self._spieler = spieler
         self._computer = computer
         self._ball = ball
         self._allSchlaeger = [self._spieler, self._computer]  # Liste
         self._punkteAnzeige = punkte_anzeige
-
-        # Der Konstruktor merkt sich lediglich die Abhängigkeit
         self._willkommen = willkommen
 
     def run(self):
