@@ -89,11 +89,14 @@ class Willkommen():
         self._draw_text(fensterFlaeche)
 
     def _draw_screen(self, fensterFlaeche):
-        popupFenster = pygame.Rect(
-            (config.linker_rand() + 80, config.linker_rand() + 60),
-            (config.fensterBreite * 2//3, config.fensterHoehe * 1//3)
-        )
-        fensterFlaeche.fill(config.weiss, popupFenster)
+        x = config.linker_rand() + 80
+        y = config.linker_rand() + 60
+        breite = config.fensterBreite * 2//3
+        hoehe = config.fensterHoehe * 1//3
+        hintergrundFarbe = config.weiss
+
+        popupFenster = pygame.Rect(x, y, breite, hoehe)
+        fensterFlaeche.fill(hintergrundFarbe, popupFenster)
 
     def _draw_text(self, fensterFlaeche):
         textZeile1 = 'Willkommen zu Pong'
