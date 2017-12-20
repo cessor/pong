@@ -83,36 +83,35 @@ class Circle(Form):
 
 class Willkommen():
     # Willkommensbildschirm beim Programmstart
+    def __init__(self):
+        self.x = config.linker_rand() + 80
+        self.y = config.linker_rand() + 60
+        self.breite = config.fensterBreite * 2//3
+        self.hoehe = config.fensterHoehe * 1//3
+        self.hintergrundFarbe = config.weiss
+        self.vordergrundFarbe = config.schwarz
+        self.schrift = config.schrift()
 
     def draw(self, fensterFlaeche):
         self._draw_screen(fensterFlaeche)
         self._draw_text(fensterFlaeche)
 
     def _draw_screen(self, fensterFlaeche):
-        x = config.linker_rand() + 80
-        y = config.linker_rand() + 60
-        breite = config.fensterBreite * 2//3
-        hoehe = config.fensterHoehe * 1//3
-        hintergrundFarbe = config.weiss
-
-        popupFenster = pygame.Rect(x, y, breite, hoehe)
-        fensterFlaeche.fill(hintergrundFarbe, popupFenster)
+        popupFenster = pygame.Rect(self.x, self.y, self.breite, self.hoehe)
+        fensterFlaeche.fill(self.hintergrundFarbe, popupFenster)
 
     def _draw_text(self, fensterFlaeche):
         textZeile1 = 'Willkommen zu Pong'
         textZeile2 = 'Spielstart mit beliebiger Taste'
 
-        vordergrundFarbe = config.schwarz
-        schrift = config.schrift()
-
-        textWidth1, textHeight1 = schrift.size(textZeile1)
-        zeile1 = schrift.render(textZeile1, False, vordergrundFarbe)
+        textWidth1, textHeight1 = self.schrift.size(textZeile1)
+        zeile1 = self.schrift.render(textZeile1, False, self.vordergrundFarbe)
         xZeile1 = (config.fensterBreite - textWidth1) // 2
         yZeile1 = (config.fensterHoehe * 2//3 - textHeight1) // 2
         fensterFlaeche.blit(zeile1, (xZeile1, yZeile1))
 
-        textWidth2, textHeight2 = schrift.size(textZeile2)
-        zeile2 = schrift.render(textZeile2, False, vordergrundFarbe)
+        textWidth2, textHeight2 = self.schrift.size(textZeile2)
+        zeile2 = self.schrift.render(textZeile2, False, self.vordergrundFarbe)
         xZeile2 = (config.fensterBreite - textWidth2) // 2
         yZeile2 = (config.fensterHoehe - config.abstand - textHeight2) // 2
         fensterFlaeche.blit(zeile2, (xZeile2, yZeile2))
