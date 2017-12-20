@@ -24,11 +24,11 @@ def main():
     ## hier Objekt ball von Klasse Ball anlegen
     ## und mit Parametern (x, y, breite, hoehe, geschwindigkeit) initialisieren
     ball = Ball(
-        x=config.fensterBreite/2-20,
-        y=config.fensterHoehe/2-20,
+        x=config.ball_x(),
+        y=config.ball_y(),
         breite=config.linienDicke,
         hoehe=config.linienDicke,
-        geschwindigkeit=5
+        geschwindigkeit=config.geschwindigkeit
     )
 
     ## hier Objekt spieler von Klasse Schlaeger anlegen
@@ -53,7 +53,7 @@ def main():
         y=config.schlaeger_mitte(),
         breite=config.schlaegerBreite,
         hoehe=config.schlaegerHoehe,
-        geschwindigkeit=5,
+        geschwindigkeit=config.geschwindigkeit,
         ball=ball
     )
 
@@ -61,8 +61,8 @@ def main():
     ## und mit Parametern (punkte, x, y, schrift) initialisiert
     punkte_anzeige = PunkteAnzeige(
         punkte=0,
-        x=config.fensterBreite - 150,
-        y=25,
+        x=config.punkte_x(),
+        y=config.punkte_y(),
         schrift=config.schrift()
     )
 

@@ -22,6 +22,7 @@ class Einstellungen(object):
     schlaegerHoehe = 50
     schriftGroesse = 16
     ballRadius = 5  # nur fuer runden Ball notwendig
+    geschwindigkeit = 5
 
     def __init__(self):
         # Notwendige Initialisierung fuer pygame
@@ -44,6 +45,12 @@ class Einstellungen(object):
     def schrift(self):
         return pygame.font.SysFont('arial', self.schriftGroesse, bold=True)
 
+    def ball_x(self):
+        return self.fensterBreite / 2-20
+
+    def ball_y(self):
+        return self.fensterHoehe  / 2-20
+
     def welcome_screen_height(self):
         return self.fensterHoehe * 1//3
 
@@ -55,6 +62,12 @@ class Einstellungen(object):
 
     def welcome_screen_y(self):
         return self.abstand + 60
+
+    def punkte_x(self):
+        return self.fensterBreite - 150
+
+    def punkte_y(self):
+        return 25
 
 
 
